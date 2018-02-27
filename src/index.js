@@ -46,6 +46,20 @@ module.exports = (config = {}) => {
   client.apiVersion = config.apiVersion || 'v1';
   client.endpoint = config.endpoint || process.env.VAULT_ADDR || 'http://127.0.0.1:8200';
   client.token = config.token || process.env.VAULT_TOKEN;
+  
+  // A few other means of token retrieval
+  if (config.useHomeToken === true && !config.tokenFile){
+    config.tokenFile = require('path').join(require('os').homedir(), ".vault-token");
+  }
+  // Allow token retrieval via file
+  if (config.tokenFile){
+    try {
+      client.token = require('fs').readFileSync(client.tokenFile)).toString();
+    }
+    catch (ex){
+      // Safe to ignore
+    }
+  }
 
   const requestSchema = {
     type: 'object',
