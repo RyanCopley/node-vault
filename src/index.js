@@ -54,7 +54,7 @@ module.exports = (config = {}) => {
   // Allow token retrieval via file
   if (config.tokenFile){
     try {
-      client.token = require('fs').readFileSync(client.tokenFile)).toString();
+      client.token = require('fs').readFileSync(client.tokenFile).toString();
     }
     catch (ex){
       // Safe to ignore
